@@ -1,0 +1,86 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace trabaio
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            //introdução
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
+            Console.WriteLine("          +=+=+=+=+=+=+=+=+=+=+=+=+=+=+          ");
+            Console.WriteLine("          +      escolha uma opção    +          ");
+            Console.WriteLine("          +=+=+=+=+=+=+=+=+=+=+=+=+=+=+          ");
+            Console.ResetColor();
+            //opções
+            Console.ForegroundColor= ConsoleColor.Green;
+            Console.Write("( 1 )");
+            Console.ResetColor();
+            Console.WriteLine(" Integrantes ");
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.Write("( 2 )");
+            Console.ResetColor();
+            Console.WriteLine(" Calcular a matriz");
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.Write("( 3 )");
+            Console.ResetColor();
+            Console.WriteLine(" História ");
+            int op = int.Parse(Console.ReadLine());
+            Console.Clear();
+            //Ação
+            switch (op)
+            {
+                //Integrantes
+                case 1:
+                    {
+                        Console.ForegroundColor = ConsoleColor.DarkYellow;
+                        Console.WriteLine("          +=+=+=+=+=+=+=+=+=+=+=+=+=+=+          ");
+                        Console.WriteLine("          +    Integrantes do Grupo   +          ");
+                        Console.WriteLine("          +=+=+=+=+=+=+=+=+=+=+=+=+=+=+          ");
+                        Console.ResetColor();
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.Write("( 1 )");
+                        Console.ResetColor();
+                        Console.WriteLine(" Ezequiel Batista Modanesi ");
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.Write("( 2 )");
+                        Console.ResetColor();
+                        Console.WriteLine(" Arthur Augusto Stracia Maciel ");
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.Write("( 3 )");
+                        Console.ResetColor();
+                        Console.WriteLine(" Breno Dantas ");
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.Write("( 4 )");
+                        Console.ResetColor();
+                        Console.WriteLine(" Gabriel Garcia Eloi ");
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.Write("( 5 )");
+                        Console.ResetColor();
+                        Console.WriteLine(" Lucas Garcia Eloi");
+                    }
+                    break;
+                //Conta
+                case 2:
+                    {
+
+                    }
+                break;
+                //Hitória
+                case 3:
+                    {
+
+                    }
+                break;
+
+
+            }
+
+
+        }
+    }
+}
