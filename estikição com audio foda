@@ -1,0 +1,133 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Media;
+
+namespace trabaio
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            string cau = @"C:\Users\ALUNO\source\repos\Musica\Michel.wav";
+            bool rep = true;
+            while (rep) {
+                //introdução
+                Console.ForegroundColor = ConsoleColor.DarkYellow;
+                Console.WriteLine("          +=+=+=+=+=+=+=+=+=+=+=+=+=+=+          ");
+                Console.WriteLine("          =  Escolha a Opção  Seguir  =          ");
+                Console.WriteLine("          +=+=+=+=+=+=+=+=+=+=+=+=+=+=+          ");
+                Console.ResetColor();
+                //opções
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.Write("( 1 )");
+                Console.ResetColor();
+                Console.WriteLine(" Integrantes ");
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.Write("( 2 )");
+                Console.ResetColor();
+                Console.WriteLine(" Calcular a matriz");
+                int op = int.Parse(Console.ReadLine());
+                Console.Clear();
+                //Ação
+                switch (op)
+                {
+                    //Integrantes
+                    case 1:
+                        {
+                            Console.ForegroundColor = ConsoleColor.DarkYellow;
+                            Console.WriteLine("          +=+=+=+=+=+=+=+=+=+=+=+=+=+=+          ");
+                            Console.WriteLine("          +    Integrantes do Grupo   +          ");
+                            Console.WriteLine("          +=+=+=+=+=+=+=+=+=+=+=+=+=+=+          ");
+                            Console.ResetColor();
+                            Console.ForegroundColor = ConsoleColor.Green;
+                            Console.Write("( 1 )");
+                            Console.ResetColor();
+                            Console.WriteLine(" Ezequiel Batista Modanesi ");
+                            Console.ForegroundColor = ConsoleColor.Green;
+                            Console.Write("( 2 )");
+                            Console.ResetColor();
+                            Console.WriteLine(" Arthur Augusto Stracia Maciel ");
+                            Console.ForegroundColor = ConsoleColor.Green;
+                            Console.Write("( 3 )");
+                            Console.ResetColor();
+                            Console.WriteLine(" Breno Dantas ");
+                            Console.ForegroundColor = ConsoleColor.Green;
+                            Console.Write("( 4 )");
+                            Console.ResetColor();
+                            Console.WriteLine(" Gabriel Garcia Eloi ");
+                            Console.ForegroundColor = ConsoleColor.Green;
+                            Console.Write("( 5 )");
+                            Console.ResetColor();
+                            Console.WriteLine(" Lucas Garcia Eloi");
+                            Console.WriteLine();
+
+                            string caminhoAudio = @"C:\Users\ALUNO\source\repos\Musica\Michel.wav";
+
+                            try
+                            {
+                                SoundPlayer player = new SoundPlayer(caminhoAudio);
+                                player.PlaySync(); // Toca o áudio e pausa a execução do código até terminar
+
+                                // Alternativas:
+                                // player.Play(); // Toca o áudio em segundo plano (assíncrono)
+                                // player.PlayLooping(); // Toca o áudio em repetição contínua
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine("Erro ao tocar áudio: " + ex.Message);
+                            }
+                            //repetir
+                            Console.WriteLine("Caso queira repetir a escolha 's' para repetir  e 'n' para sair do programa,aperte ");
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.Write("SOMENTE");
+                            Console.ResetColor();
+                            Console.Write(" a tecla 's' e caso queira repetir aperte a tecla 'n' caso queria fechar o programa");
+                            if (Console.ReadKey().Key == ConsoleKey.N)
+                            {
+                                rep = false;
+                                Console.Clear();
+                                Console.WriteLine("Tchau,até a próxima vez");
+                            }
+                            Console.Clear();
+
+
+
+
+                        }
+                        break;
+                    //Conta
+                    case 2:
+                        {
+
+
+                        }
+                        break;
+                    default:
+                        {
+                            Console.ForegroundColor = ConsoleColor.DarkRed;
+                            Console.WriteLine("Opção Invalida");
+                            Console.ResetColor();
+                            Console.WriteLine("Caso queira repetir a escolha 's' para repetir  e 'n' para sair do programa,aperte ");
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.Write("SOMENTE");
+                            Console.ResetColor();
+                            Console.Write(" a tecla 's' para caso queira repetir, aperte a tecla 'n' caso queria fechar o programa");
+                            if (Console.ReadKey().Key == ConsoleKey.N)
+                            {
+                                rep = false;
+                                Console.Clear();
+                                Console.WriteLine("Tchau,até a próxima vez");
+                            }
+                            Console.Clear();
+                    }
+                        break;
+
+                } }
+
+
+        }
+    }
+}
