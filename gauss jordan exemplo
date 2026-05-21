@@ -1,0 +1,123 @@
+using System;
+
+class Program
+{
+    static void Main()
+    {
+        // Exemplo de Matriz 3x3
+        double[,] matriz = {
+            { 2, 5, 1 },
+            { 3, 2, 4 },
+            { 1, 4, 2 }
+        };
+
+        double[,] inversa = InverterMatriz(matriz);
+
+        if (inversa != null)
+        {
+            Console.WriteLine("Matriz Inversa Calculada:");
+            ImprimirMatriz(inversa);
+        }
+        else
+        {
+            Console.WriteLine("A matriz nao possui inversa (Determinante e zero).");
+        }
+    }
+
+    public static double[,] InverterMatriz(double[,] A)
+    {
+        int n = A.GetLength(0);
+        double[,] M = new double[n, 2 * n];
+
+        // 1. Criar matriz aumentada [A | I]
+        for (int i = 0; i < n; i++)
+        {
+            for (int j = 0; j < n; j++)
+            {
+                M[i, j] = A[i, j];
+            }
+            M[i, i + n] = 1; // Matriz Identidade
+        }
+
+        // 2. Eliminação de Gauss-Jordan
+        for (int i = 0; i < n; i++)
+        {
+            // Pivoteamento: encontra o maior elemento na coluna para precisão numérica
+            double maxEl = Math.Abs(M[i, i]);
+            int maxRow = i;
+            for (int k = i + 1; k < n; k++)
+            {
+                if (Math.Abs(M[k, i]) > maxEl)
+                {
+                    maxEl = Math.Abs(M[k, i]);
+                    maxRow = k;
+                }
+            }
+
+            // Troca as linhas se o pivô for máximo
+            if (maxRow != i)
+            {
+                double[] tmp = new double[2 * n];
+                for (int k = 0; k < 2 * n; k++)
+                {
+                    tmp[k] = M[i, k];
+                    M[i, k] = M[maxRow, k];
+                    M[maxRow, k] = tmp[k];
+                }
+            }
+
+            // Se o pivô for zero, a matriz é singular (não tem inversa)
+            if (Math.Abs(M[i, i]) < 1e-12)
+            {
+                return null; 
+            }
+
+            // Divide a linha pelo pivô para tornar o elemento principal = 1
+            double pivot = M[i, i];
+            for (int j = 0; j < 2 * n; j++)
+            {
+                M[i, j] /= pivot;
+            }
+
+            // Zera os outros elementos da coluna
+            for (int k = 0; k < n; k++)
+            {
+                if (k != i)
+                {
+                    double factor = M[k, i];
+                    for (int j = 0; j < 2 * n; j++)
+                    {
+                        M[k, j] -= factor * M[i, j];
+                    }
+                }
+            }
+        }
+
+        // 3. Extrai a matriz inversa da metade direita
+        double[,] inversa = new double[n, n];
+        for (int i = 0; i < n; i++)
+        {
+            for (int j = 0; j < n; j++)
+            {
+                inversa[i, j] = M[i, j + n];
+            }
+        }
+
+        return inversa;
+    }
+
+    public static void ImprimirMatriz(double[,] matriz)
+    {
+        int linhas = matriz.GetLength(0);
+        int colunas = matriz.GetLength(1);
+
+        for (int i = 0; i < linhas; i++)
+        {
+            for (int j = 0; j < colunas; j++)
+            {
+                Console.Write($"{matriz[i, j],8:F4} ");
+            }
+            Console.WriteLine();
+        }
+    }
+}
