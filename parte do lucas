@@ -1,0 +1,112 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace oo
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            double d1 = 0, d2 = 0, determinante;
+            Console.WriteLine("================================");
+            Console.WriteLine("         MATRIZ INVERSA          ");
+            Console.WriteLine("================================");
+            Console.WriteLine();
+            Console.WriteLine("qual vai ser o tamanho da matriz (digite N1XN2)");
+            string teste = Console.ReadLine();
+            
+            string[] teste2 = teste.Split('x');
+            if (teste2[0] != teste2[1])
+            {
+                Console.WriteLine("a matriz precisa ser quadrada, porfavor volte ao inicio");
+            }
+            else
+            {
+                if (teste2[0] == "1")
+                {
+
+                    Console.WriteLine("digite o numero dentro da matriz");
+                    int b = int.Parse(Console.ReadLine());
+
+                    Console.WriteLine("a matriz inversa de " + "[" + b + "]" + " é " + "[1/" + b + "]");
+                }
+                else if(teste2[0] == "2")
+                {
+                    double[,] matriz = new double[2, 2];
+                    int x1 = 1, x2 = 1;
+                    for(int lin =0; lin < 2; lin++)
+                    {
+                        for(int col = 0; col < 2; col++)
+                        {
+                            Console.WriteLine("digite o numero da matriz" + x1 + "," + x2);
+                            double oi = double.Parse(Console.ReadLine());
+                            matriz[lin, col] = oi;
+                            x2++;
+                        }
+                        x1++;
+                        x2= 1;
+                    }
+                    d1 = matriz[0, 0] * matriz[1, 1];
+                    d2 = matriz[0, 1] * matriz[1, 0];
+                    determinante = d1 - d2; 
+                    while(determinante == 0)
+                     {
+                     Console.WriteLine("o determinate nao pode ser 0, porfavor digite outros numeros");
+                        x1 = 0;
+                        x2 = 0;
+                     for (int lin = 0; lin < 2; lin++)
+                     {
+                       for (int col = 0; col < 2; col++)
+                       {
+                                    Console.WriteLine("digite o numero da matriz" + x1 + "," + x2);
+                                    double oi = double.Parse(Console.ReadLine());
+                                    matriz[lin, col] = oi;
+                                    x2++;
+                       }
+                      x1++;
+                      x2 = 1;
+                     }
+                    d1 = matriz[0, 0] * matriz[1, 1];
+                    d2 = matriz[0, 1] * matriz[1, 0];
+                    determinante = d1 - d2;
+                    }
+                    double a1, a2, a3, a4;
+                    a1 = matriz[0, 0] / determinante;
+                    a2 = matriz[0, 1] / determinante;
+                    a3 = matriz[1, 0] / determinante;
+                    a4 = matriz[1, 1] / determinante;
+                    double[,] matriz2 = new double[2, 2];
+                    matriz2[0, 0] = a4;
+                    matriz2[0, 1] = a2 * -1;
+                    matriz2[1, 0] = a3 * -1;
+                    matriz2[1, 1] = a1;
+                    Console.WriteLine("a mateiz inversa é");
+                    Console.WriteLine(matriz2[0, 0] + " " + matriz2[0, 1]);
+                    Console.WriteLine(matriz[1,0] + " " + matriz[1,1]); 
+                }
+                else if (teste2[0] == "3")
+                {
+                    double[,] matriz = new double[3,3];
+                    int x1 = 1, x2 = 1;
+                    for (int lin = 0; lin < 3; lin++)
+                    {
+                        for (int col = 0; col < 3; col++)
+                        {
+                            Console.WriteLine("digite o numero da matriz" + x1 + "," + x2);
+                            double oi = double.Parse(Console.ReadLine());
+                            matriz[lin, col] = oi;
+                            x2++;
+                        }
+                        x1++;
+                        x2 = 1;
+                    }
+
+                }
+            }
+        }
+    }
+}
