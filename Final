@@ -1,0 +1,451 @@
+using NAudio.Wave;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Media;
+using System.Net.Http;
+using System.Numerics;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace trabaio
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+
+
+            // URL de exemplo (substitua pelo link direto do seu áudio)
+            //Pegar as playlist
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
+            Console.WriteLine("+=+=+=+=+=+=+=+=+=+=+=+=+=");
+            Console.WriteLine("=         Músicas        +");
+            Console.WriteLine("+=+=+=+=+=+=+=+=+=+=+=+=+=");
+            Console.ResetColor();
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.Write("1 ->");
+            Console.ResetColor() ;
+            Console.WriteLine(" Smooth Criminal");
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.Write("2 ->");
+            Console.ResetColor();
+            Console.WriteLine(" Love never felt so good");
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.Write("3 ->");
+            Console.ResetColor();
+            Console.WriteLine(" Bad");
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.Write("4 ->");
+            Console.ResetColor();
+            Console.WriteLine(" Highway to Hell");
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.Write("5 ->");
+            Console.ResetColor();
+            Console.WriteLine(" Impostor Syndrome");
+            int a = int.Parse(Console.ReadLine());
+            if (a == 1)
+            {
+                string audioUrl = "https://cs1.mp3.pm/download/209123037/NEdYWm5NTzVBWmtXNWZBaGdYWlA2UmM1aXBNd0NhYjE4eXBrVGNxUDFpSHhRNVd5YktsZndhbmdJK29NY2I3TVl6N1orOVpvQ2dVSkJrMXJhZ1UrckN0MTBTSjdzS3g0ZnJFRUdMcVdBODc5R2xSY0lCOHZobmxlTlBZUEhpekg/Michael_Jackson_-_Smooth_Criminal_(mp3.pm).mp3";
+                PlayAudioFromUrlAsync(audioUrl).Wait();
+            }
+            else if (a == 2)
+            {
+                string audioUrl = "https://cs1.mp3.pm/download/8969478/NEdYWm5NTzVBWmtXNWZBaGdYWlA2UmM1aXBNd0NhYjE4eXBrVGNxUDFpSE1PM0hZQUpWcVNiOVg1bzQrTVNCNWNYV2krczM5RjJzV21mbVZuMFoyaE1XRWIzSGx1R2grVzh4SFhwRFZtYjNrK1gzRlYwbm90c2dCa2VJQXN5RWs/Michael_Jackson_feat._Justin_Timberlake_-_Love_Never_Felt_So_Good_Album_Original_(mp3.pm).mp3";
+                PlayAudioFromUrlAsync(audioUrl).Wait();
+            }
+            else if (a == 3)
+            {
+                string audioUrl = "https://cs1.mp3.pm/download/85317585/NEdYWm5NTzVBWmtXNWZBaGdYWlA2UmM1aXBNd0NhYjE4eXBrVGNxUDFpRU9PWElURjZoS3Q2YXR1bk8zZnlVSStpUXdkZnB4aDZLNStuTjY1MFN2bnNzZlVIYW1FQUNqUThsOUVBNnBweG9lUmNBNm5SUmlDUUZFU1ZvYm11cU8/Micheal_Jackson_-_Bad_(mp3.pm).mp3";
+                PlayAudioFromUrlAsync(audioUrl).Wait();
+            }
+            else if (a == 4)
+            {
+                string audioUrl = "https://cs1.mp3.pm/download/81340239/NEdYWm5NTzVBWmtXNWZBaGdYWlA2UmM1aXBNd0NhYjE4eXBrVGNxUDFpR2JaZkpBdFZTelBuaE1JZVZPa0xVWkRUUlcrSEZPTHBLZS8vMUlpdmU3T0tJWm9QSHhwTnh1R0tqS3R2all5ZjlHdE45VXRtbGluR0FiU25aMER6Tks/ACDS_-_Highway_To_Hell_(mp3.pm).mp3";
+                PlayAudioFromUrlAsync(audioUrl).Wait();
+            }
+            else if (a == 5) {
+                string audioUrl = "https://cs1.mp3.pm/download/116977548/NEdYWm5NTzVBWmtXNWZBaGdYWlA2UmM1aXBNd0NhYjE4eXBrVGNxUDFpRjdnM3ltNGxlNFR4emJSc3JWcTRZbmNMa2hqamdxL2I0YzZxYWU3QWh6TkZESGFwa2VQM2NpUzlTc2x4QmhSUm1EcWR2dmYydDg0MHlwZm5NbmVaR2c/cavetown_-_Sidney_Gish_-_Impostor_Syndrome_Cover_(mp3.pm).mp3";
+                PlayAudioFromUrlAsync(audioUrl).Wait();
+            }
+
+
+                Console.WriteLine("Pressione qualquer tecla para sair...");
+            Console.ReadKey();
+        }
+
+        private static async System.Threading.Tasks.Task PlayAudioFromUrlAsync(string url)
+        {
+            try
+            {
+                using (HttpClient client = new HttpClient())
+                {
+                    Console.WriteLine("Baixando o áudio...");
+                    byte[] data = await client.GetByteArrayAsync(url);
+
+                    using (MemoryStream ms = new MemoryStream(data))
+                    using (Mp3FileReader mp3Reader = new Mp3FileReader(ms))
+                    using (WaveOutEvent waveOut = new WaveOutEvent())
+                    {
+                        waveOut.Init(mp3Reader);
+                        waveOut.Play();
+
+                        Console.WriteLine("Reproduzindo áudio...");
+                        // Aguarda a reprodução terminar
+                        while (waveOut.PlaybackState == PlaybackState.Playing)
+                        {
+                            bool rep = true;
+                            while (rep)
+                            {
+
+
+
+
+
+                                /* try
+                                 {
+                                     SoundPlayer player = new SoundPlayer(caminhoAudio);
+                                     //player.PlaySync(); // Toca o áudio e pausa a execução do código até terminar
+
+                                     // Alternativas:
+                                     player.Play(); // Toca o áudio em segundo plano (assíncrono)
+                                                    // player.PlayLooping(); // Toca o áudio em repetição contínua
+                                 }
+                                 catch (Exception ex)
+                                 {
+                                     Console.WriteLine("Erro ao tocar áudio: " + ex.Message);
+                                 }*/
+                                //introdução
+                                Console.ForegroundColor = ConsoleColor.DarkYellow;
+                                Console.WriteLine("          +=+=+=+=+=+=+=+=+=+=+=+=+=+=+          ");
+                                Console.WriteLine("          =  Escolha a Opção  Seguir  =          ");
+                                Console.WriteLine("          +=+=+=+=+=+=+=+=+=+=+=+=+=+=+          ");
+                                Console.ResetColor();
+                                //opções
+                                Console.ForegroundColor = ConsoleColor.Green;
+                                Console.Write("( 1 )");
+                                Console.ResetColor();
+                                Console.WriteLine(" Integrantes ");
+                                Console.ForegroundColor = ConsoleColor.Green;
+                                Console.Write("( 2 )");
+                                Console.ResetColor();
+                                Console.WriteLine(" Calcular a matriz");
+                                int op = int.Parse(Console.ReadLine());
+                                Console.Clear();
+                                //Ação
+                                switch (op)
+                                {
+                                    //Integrantes
+                                    case 1:
+                                        {
+                                            Console.ForegroundColor = ConsoleColor.DarkYellow;
+                                            Console.WriteLine("          +=+=+=+=+=+=+=+=+=+=+=+=+=+=+          ");
+                                            Console.WriteLine("          +    Integrantes do Grupo   +          ");
+                                            Console.WriteLine("          +=+=+=+=+=+=+=+=+=+=+=+=+=+=+          ");
+                                            Console.ResetColor();
+                                            Console.ForegroundColor = ConsoleColor.Green;
+                                            Console.Write("( 1 )");
+                                            Console.ResetColor();
+                                            Console.WriteLine(" Ezequiel Batista Modanesi ");
+                                            Console.ForegroundColor = ConsoleColor.Green;
+                                            Console.Write("( 2 )");
+                                            Console.ResetColor();
+                                            Console.WriteLine(" Arthur Augusto Stracia Maciel ");
+                                            Console.ForegroundColor = ConsoleColor.Green;
+                                            Console.Write("( 3 )");
+                                            Console.ResetColor();
+                                            Console.WriteLine(" Breno Dantas ");
+                                            Console.ForegroundColor = ConsoleColor.Green;
+                                            Console.Write("( 4 )");
+                                            Console.ResetColor();
+                                            Console.WriteLine(" Gabriel Garcia Eloi ");
+                                            Console.ForegroundColor = ConsoleColor.Green;
+                                            Console.Write("( 5 )");
+                                            Console.ResetColor();
+                                            Console.WriteLine(" Lucas Garcia Eloi");
+                                            Console.WriteLine();
+
+
+                                            //repetir
+                                            Console.WriteLine("Caso queira repetir a escolha 's' para repetir  e 'n' para sair do programa,aperte ");
+                                            Console.ForegroundColor = ConsoleColor.Red;
+                                            Console.Write("SOMENTE");
+                                            Console.ResetColor();
+                                            Console.Write(" a tecla 's' e caso queira repetir aperte a tecla 'n' caso queria fechar o programa");
+                                            if (Console.ReadKey().Key == ConsoleKey.N)
+                                            {
+                                                rep = false;
+                                                Console.Clear();
+                                                Console.WriteLine("Tchau,até a próxima vez");
+                                            }
+                                            Console.Clear();
+
+
+
+
+                                        }
+                                        break;
+                                    //Conta
+                                    case 2:
+                                        {
+                                            double d1 = 0, d2 = 0, determinante;
+                                            Console.ForegroundColor = ConsoleColor.Yellow;
+                                            Console.WriteLine("================================");
+                                            Console.WriteLine("         MATRIZ INVERSA          ");
+                                            Console.WriteLine("================================");
+                                            Console.WriteLine();
+                                            Console.WriteLine("qual vai ser o tamanho da matriz (digite N1XN2)");
+                                            Console.ResetColor();
+                                            string teste = Console.ReadLine();
+                                            teste = teste.ToUpper();
+                                            string[] teste2 = teste.Split('X');
+                                            int k = int.Parse(teste2[0]);
+                                            if (teste2[0] != teste2[1])
+                                            {
+                                                Console.WriteLine("a matriz precisa ser quadrada, porfavor volte ao inicio");
+                                            }
+                                            else
+                                            {
+                                                if (teste2[0] == "1")
+                                                {
+
+                                                    Console.WriteLine("digite o numero dentro da matriz");
+                                                    int b = int.Parse(Console.ReadLine());
+
+                                                    Console.WriteLine("a matriz inversa de " + "[" + b + "]" + " é " + "[1/" + b + "]");
+                                                }
+                                                else if (teste2[0] == "2")
+                                                {
+                                                    double[,] matriz = new double[2, 2];
+                                                    int x1 = 1, x2 = 1;
+                                                    for (int lin = 0; lin < 2; lin++)
+                                                    {
+                                                        for (int col = 0; col < 2; col++)
+                                                        {
+                                                            Console.WriteLine("digite o numero da matriz" + x1 + "," + x2);
+                                                            double oi = double.Parse(Console.ReadLine());
+                                                            matriz[lin, col] = oi;
+                                                            x2++;
+                                                        }
+                                                        x1++;
+                                                        x2 = 1;
+                                                    }
+                                                    d1 = matriz[0, 0] * matriz[1, 1];
+                                                    d2 = matriz[0, 1] * matriz[1, 0];
+                                                    determinante = d1 - d2;
+                                                    while (determinante == 0)
+                                                    {
+                                                        Console.WriteLine("o determinate nao pode ser 0, porfavor digite outros numeros");
+                                                        x1 = 1;
+                                                        x2 = 1;
+                                                        for (int lin = 0; lin < 2; lin++)
+                                                        {
+                                                            for (int col = 0; col < 2; col++)
+                                                            {
+                                                                Console.WriteLine("digite o numero da matriz" + x1 + "," + x2);
+                                                                double oi = double.Parse(Console.ReadLine());
+                                                                matriz[lin, col] = oi;
+                                                                x2++;
+                                                            }
+                                                            x1++;
+                                                            x2 = 1;
+                                                        }
+                                                        d1 = matriz[0, 0] * matriz[1, 1];
+
+                                                        d2 = matriz[0, 1] * matriz[1, 0];
+
+                                                        determinante = d1 - d2;
+                                                    }
+                                                    Console.WriteLine("a diagonal principal é " + matriz[0, 0] + "*" + matriz[1, 1] + "= " + d1);
+                                                    Console.WriteLine("a diagonal segundária é " + matriz[0, 1] + "*" + matriz[1, 0] + "= " + d2);
+                                                    Console.WriteLine("aperte uma qualquer tecla para continuar");
+                                                    Console.ReadKey();
+                                                    Console.Clear();
+                                                    Console.ForegroundColor = ConsoleColor.Red;
+                                                    Console.WriteLine("sua matriz é:");
+                                                    Console.ForegroundColor = ConsoleColor.Red;
+                                                    Console.WriteLine("|" + matriz[0, 0] + "\t" + matriz[0, 1] + "|");
+                                                    Console.WriteLine("|" + matriz[1, 0] + "\t" + matriz[1, 1] + "|");
+                                                    Console.ResetColor();
+                                                    Console.ForegroundColor = ConsoleColor.White;
+                                                    Console.ForegroundColor = ConsoleColor.Cyan;
+                                                    Console.WriteLine("Para calcular o determinante nós pegamos o valor da diagonal principal: " + d1 + " e subtraimos pelo valor da diagonal secundária: " + d2);
+                                                    Console.ResetColor();
+                                                    Console.Write("o valor do determinante da sua matriz é: ");
+
+
+                                                    Console.ForegroundColor = ConsoleColor.Blue;
+                                                    Console.WriteLine(determinante);
+                                                    Console.ForegroundColor = ConsoleColor.White;
+                                                    Console.WriteLine();
+                                                    double a1, a2, a3, a4;
+                                                    a1 = matriz[0, 0] / determinante;
+                                                    a2 = matriz[0, 1] / determinante;
+                                                    a3 = matriz[1, 0] / determinante;
+                                                    a4 = matriz[1, 1] / determinante;
+                                                    double[,] matriz2 = new double[2, 2];
+                                                    matriz2[0, 0] = a4;
+                                                    matriz2[0, 1] = a2 * -1;
+                                                    matriz2[1, 0] = a3 * -1;
+                                                    matriz2[1, 1] = a1;
+                                                    Console.WriteLine("aperte qualquer tecla para continuar ");
+                                                    Console.ReadKey();
+                                                    Console.Clear();
+                                                    Console.WriteLine("dividimos a sua matriz: ");
+                                                    Console.ForegroundColor = ConsoleColor.Red;
+                                                    Console.WriteLine("|" + matriz[0, 0] + "\t" + matriz[0, 1] + "|");
+                                                    Console.WriteLine("|" + matriz[1, 0] + "\t" + matriz[1, 1] + "|");
+                                                    Console.ResetColor();
+                                                    Console.WriteLine("pelo determinante = " + determinante);
+                                                    Console.ForegroundColor = ConsoleColor.Red;
+                                                    Console.WriteLine(" a matriz fica assim:");
+                                                    Console.WriteLine("|" + a1 + "\t" + a2 + "|");
+                                                    Console.WriteLine("|" + a3 + "\t" + a4 + "|");
+                                                    Console.ResetColor();
+                                                    Console.WriteLine("aperte qualquer tecla para continuar ");
+                                                    Console.ReadKey();
+                                                    Console.Clear();
+                                                    Console.WriteLine("depois trocamos as posições da diagonal primária e invertemos o sinal da diagona secundária, dando a matriz inversa");
+                                                    Console.ForegroundColor = ConsoleColor.Red;
+                                                    Console.WriteLine("a matriz inversa é");
+                                                    Console.WriteLine("|" + matriz2[0, 0] + "\t" + matriz2[0, 1] + "|");
+                                                    Console.WriteLine("|" + matriz2[1, 0] + "\t" + matriz2[1, 1] + "|");
+                                                    Console.ResetColor();
+                                                }
+                                                else if (teste2[0] == "3")
+                                                {
+                                                    double[,] matriz = new double[3, 3];
+                                                    int x1 = 1, x2 = 1;
+                                                    for (int lin = 0; lin < 3; lin++)
+                                                    {
+                                                        for (int col = 0; col < 3; col++)
+                                                        {
+                                                            Console.WriteLine("digite o numero da matriz" + x1 + "," + x2);
+                                                            double oi = double.Parse(Console.ReadLine());
+                                                            matriz[lin, col] = oi;
+                                                            x2++;
+                                                        }
+                                                        x1++;
+                                                        x2 = 1;
+                                                    }
+                                                    d1 = matriz[0, 0] * matriz[1, 1] * matriz[2, 2] + matriz[1, 0] * matriz[2, 1] * matriz[0, 2] + matriz[0, 1] * matriz[1, 2] * matriz[2, 0];
+                                                    d2 = matriz[0, 2] * matriz[1, 1] * matriz[2, 0] + matriz[0, 1] * matriz[1, 0] * matriz[2, 2] + matriz[1, 2] * matriz[2, 1] * matriz[0, 0];
+                                                    determinante = d1 - d2;
+                                                    while (determinante == 0)
+                                                    {
+                                                        Console.WriteLine("o determinante da matriz nao pode ser 0 porfavor digite novamente");
+
+                                                        x1 = 1;
+                                                        x2 = 1;
+                                                        for (int lin = 0; lin < 3; lin++)
+                                                        {
+                                                            for (int col = 0; col < 3; col++)
+                                                            {
+                                                                Console.WriteLine("digite o numero da matriz" + x1 + "," + x2);
+                                                                double oi = double.Parse(Console.ReadLine());
+                                                                matriz[lin, col] = oi;
+                                                                x2++;
+                                                            }
+                                                            x1++;
+                                                            x2 = 1;
+                                                        }
+                                                        d1 = matriz[0, 0] * matriz[1, 1] * matriz[2, 2] + matriz[1, 0] * matriz[2, 1] * matriz[0, 2] + matriz[0, 1] * matriz[1, 2] * matriz[2, 0];
+                                                        d2 = matriz[0, 2] * matriz[1, 1] * matriz[2, 0] + matriz[0, 1] * matriz[1, 0] * matriz[2, 2] + matriz[1, 2] * matriz[2, 1] * matriz[0, 0];
+                                                        determinante = d1 - d2;
+                                                    }
+                                                    Console.Clear();
+                                                    Console.WriteLine("o valor do determinante é igual a: " + determinante);
+                                                    double t11, t12, t13, t21, t22, t23, t31, t32, t33;
+                                                    t11 = Math.Pow(-1, 2) * (matriz[1, 1] * matriz[2, 2] - (matriz[1, 2] * matriz[2, 1]));
+                                                    t12 = Math.Pow(-1, 3) * (matriz[1, 0] * matriz[2, 2] - (matriz[1, 2] * matriz[2, 0]));
+                                                    t13 = Math.Pow(-1, 4) * (matriz[1, 0] * matriz[2, 1] - (matriz[1, 1] * matriz[2, 0]));
+                                                    t21 = Math.Pow(-1, 3) * (matriz[0, 1] * matriz[2, 2] - (matriz[0, 2] * matriz[2, 1]));
+                                                    t22 = Math.Pow(-1, 4) * (matriz[0, 0] * matriz[2, 2] - (matriz[0, 2] * matriz[2, 0]));
+                                                    t23 = Math.Pow(-1, 5) * (matriz[0, 0] * matriz[2, 1] - (matriz[0, 1] * matriz[2, 0]));
+                                                    t31 = Math.Pow(-1, 4) * (matriz[0, 1] * matriz[1, 2] - (matriz[0, 2] * matriz[1, 1]));
+                                                    t32 = Math.Pow(-1, 5) * (matriz[0, 0] * matriz[1, 2] - (matriz[0, 2] * matriz[1, 0]));
+                                                    t33 = Math.Pow(-1, 6) * (matriz[0, 0] * matriz[1, 1] - (matriz[0, 1] * matriz[1, 0]));
+                                                    double[,] matriz2 = new double[3, 3];
+                                                    matriz2[0, 0] = t11;
+                                                    matriz2[1, 0] = t12;
+                                                    matriz2[2, 0] = t13;
+                                                    matriz2[0, 1] = t21;
+                                                    matriz2[1, 1] = t22;
+                                                    matriz2[2, 1] = t23;
+                                                    matriz2[0, 2] = t31;
+                                                    matriz2[1, 2] = t32;
+                                                    matriz2[2, 2] = t33;
+                                                    Console.WriteLine(" a matriz inversa da matriz 3X3 é: ");
+                                                    Console.WriteLine(matriz2[0, 0] + " " + matriz2[0, 1] + " " + matriz2[0, 2]);
+                                                    Console.WriteLine(matriz2[1, 0] + " " + matriz2[1, 1] + " " + matriz2[1, 2] + "  " + "*" + "1/" + determinante);
+                                                    Console.WriteLine(matriz2[2, 0] + " " + matriz2[2, 1] + " " + matriz2[2, 2]);
+
+                                                }
+
+
+
+
+
+
+                                                Console.ForegroundColor = ConsoleColor.DarkRed;
+                                                Console.WriteLine("Opção Invalida");
+                                                Console.ResetColor();
+                                                Console.WriteLine("Caso queira repetir a escolha 's' para repetir  e 'n' para sair do programa,aperte ");
+                                                Console.ForegroundColor = ConsoleColor.Red;
+                                                Console.Write("SOMENTE");
+                                                Console.ResetColor();
+                                                Console.Write(" a tecla 's' para caso queira repetir, aperte a tecla 'n' caso queria fechar o programa");
+                                                if (Console.ReadKey().Key == ConsoleKey.N)
+                                                {
+                                                    rep = false;
+                                                    Console.Clear();
+                                                    Console.WriteLine("Tchau,até a próxima vez");
+                                                }
+                                                Console.Clear();
+                                            }
+                                            break;
+
+
+                                            {
+                                                Console.ForegroundColor = ConsoleColor.DarkRed;
+
+                                                Console.ResetColor();
+                                                Console.WriteLine("Caso queira repetir a escolha 's' para repetir  e 'n' para sair do programa,aperte ");
+                                                Console.ForegroundColor = ConsoleColor.Red;
+                                                Console.Write("SOMENTE");
+                                                Console.ResetColor();
+                                                Console.Write(" a tecla 's' para caso queira repetir, aperte a tecla 'n' caso queria fechar o programa");
+                                                if (Console.ReadKey().Key == ConsoleKey.N)
+                                                {
+                                                    rep = false;
+                                                    Console.Clear();
+                                                    Console.WriteLine("Tchau,até a próxima vez");
+                                                }
+                                                Console.Clear();
+                                            }
+
+                                            break;
+
+                                        }
+
+
+
+
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Erro ao reproduzir áudio: {ex.Message}");
+            }
+
+           
+
+
+        }
+    }
+}
